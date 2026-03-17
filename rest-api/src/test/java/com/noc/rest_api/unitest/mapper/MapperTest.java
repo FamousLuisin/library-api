@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.noc.rest_api.dto.v1.PersonDto;
+import com.noc.rest_api.dto.PersonDto;
 import com.noc.rest_api.mapper.Mapper;
 import com.noc.rest_api.model.Person;
 import com.noc.rest_api.unitest.mapper.mocks.MockPerson;

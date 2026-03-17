@@ -3,7 +3,7 @@ package com.noc.rest_api.unitest.mapper.mocks;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.noc.rest_api.dto.v1.PersonDto;
+import com.noc.rest_api.dto.PersonDto;
 import com.noc.rest_api.model.Person;
 
 public class MockPerson {
