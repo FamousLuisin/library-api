@@ -9,7 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.noc.rest_api.dto.PersonDto;
+import com.noc.rest_api.dto.v1.PersonDto;
+import com.noc.rest_api.dto.v2.PersonDtoV2;
 import com.noc.rest_api.mapper.Mapper;
 import com.noc.rest_api.model.Person;
 import com.noc.rest_api.repository.PersonRepository;
@@ -42,6 +43,16 @@ public class PersonServices {
     }
 
     public PersonDto create(PersonDto personDto){
+        logger.info("Create person");
+
+        Person person = pRepository.save(mapper.parseObject(personDto, Person.class));
+
+        personDto.setId(person.getId());
+
+        return personDto;
+    }
+
+    public PersonDtoV2 create(PersonDtoV2 personDto){
         logger.info("Create person");
 
         Person person = pRepository.save(mapper.parseObject(personDto, Person.class));

@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.noc.rest_api.dto.PersonDto;
+import com.noc.rest_api.dto.v1.PersonDto;
+import com.noc.rest_api.dto.v2.PersonDtoV2;
 import com.noc.rest_api.services.PersonServices;
 
 @RestController
@@ -34,6 +35,11 @@ public class PersonController {
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public PersonDto create(@RequestBody PersonDto person){
+        return pServices.create(person);
+    }
+
+    @RequestMapping(path = "/v2", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public PersonDtoV2 create(@RequestBody PersonDtoV2 person){
         return pServices.create(person);
     }
 
