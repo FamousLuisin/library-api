@@ -1,10 +1,14 @@
 spring:
-    application:
-        name: rest-api
-    datasource:
-        url: jdbc:postgresql://localhost:5432/apidb
-        username: admin
-        password: admin
-    jpa:
-        hibernate:
-            ddl-auto: create-drop
+  application:
+    name: rest-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/apidb
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+logging:
+  level:
+    root: warn

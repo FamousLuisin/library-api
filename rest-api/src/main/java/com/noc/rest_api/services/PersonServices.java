@@ -1,52 +1,69 @@
 package com.noc.rest_api.services;
 
 import java.util.List;
-import java.util.logging.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.noc.rest_api.dto.PersonDto;
+import com.noc.rest_api.mapper.Mapper;
 import com.noc.rest_api.model.Person;
 import com.noc.rest_api.repository.PersonRepository;
 
 @Service
 public class PersonServices {
     
-    private Logger logger = Logger.getLogger(PersonServices.class.getName());
+    private Logger logger = LoggerFactory.getLogger(PersonServices.class.getName());
 
     @Autowired
     private PersonRepository pRepository;
 
-    public Person findById(Long id){
+    @Autowired
+    private Mapper mapper;
+
+    public PersonDto findById(Long id){
         logger.info("Find Person by Id " + id);
 
-        return pRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
+        Person person = pRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
+
+        return mapper.parseObject(person, PersonDto.class);
     }
 
-    public List<Person> findAll(){
+    public List<PersonDto> findAll(){
         logger.info("Find all peoples");
 
-        return pRepository.findAll();
+        List<Person> listPersons = pRepository.findAll();
+
+        return mapper.parseListObjects(listPersons, PersonDto.class);
     }
 
-    public Person create(Person person){
+    public PersonDto create(PersonDto personDto){
         logger.info("Create person");
 
-        pRepository.save(person);
+        Person person = pRepository.save(mapper.parseObject(personDto, Person.class));
 
-        return person;
+        personDto.setId(person.getId());
+
+        return personDto;
     }
 
-    public Person update(Person person){
+    public PersonDto update(PersonDto personDto){
         logger.info("Update person");
 
-        pRepository
-            .findById(person.getId())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
+        Person person = pRepository
+            .findById(personDto.getId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found")); 
+        
+        person.setAddress(personDto.getAddress());
+        person.setFirstName(personDto.getFirstName());
+        person.setLastName(personDto.getLastName());
+        person.setGender(personDto.getGender());
 
-        return pRepository.save(person);
+        return mapper.parseObject(pRepository.save(person) , PersonDto.class);
     }
 
     public void delete(Long id){

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.noc.rest_api.model.Person;
+import com.noc.rest_api.dto.PersonDto;
 import com.noc.rest_api.services.PersonServices;
 
 @RestController
@@ -21,24 +21,24 @@ public class PersonController {
     private PersonServices pServices;
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person findById(@PathVariable("id") Long id){
+    public PersonDto findById(@PathVariable("id") Long id){
         
         return pServices.findById(id);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Person> findAll(){
+    public List<PersonDto> findAll(){
 
         return pServices.findAll();
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person create(@RequestBody Person person){
+    public PersonDto create(@RequestBody PersonDto person){
         return pServices.create(person);
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person update(@RequestBody Person person){
+    public PersonDto update(@RequestBody PersonDto person){
         return pServices.update(person);
     }
 
