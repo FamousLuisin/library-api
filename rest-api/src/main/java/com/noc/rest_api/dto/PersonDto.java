@@ -1,6 +1,6 @@
 package com.noc.rest_api.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.noc.rest_api.serializer.GenderSerializer;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @JsonPropertyOrder({"id", "lastName", "firstName", "birthday", "address", "gender"})
 public class PersonDto {
 
-    @JsonIgnore
+    @JsonProperty("_id")
     private Long id;
     private String firstName;
     private String lastName;
