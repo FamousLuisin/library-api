@@ -1,7 +1,5 @@
 package com.noc.rest_api.model;
 
-import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,15 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor @NoArgsConstructor
 @Data
 @Entity @Table(name = "tb_person")
-public class Person implements Serializable {
-
-    @SuppressWarnings("unused")
-    private static final long seriaVersionUID = 1L;
+public class Person {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "fist_name", nullable = false, length = 100)
+    @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
 
     @Column(name = "last_name", nullable = false, length = 100)
