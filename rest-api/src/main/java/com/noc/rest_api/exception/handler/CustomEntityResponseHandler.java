@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.noc.rest_api.exception.ExceptionResponse;
+import com.noc.rest_api.exception.RequiredObjectIsNullException;
 
 @ControllerAdvice
 @RestController
@@ -28,6 +29,17 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
 
     @ExceptionHandler(exception = ResponseStatusException.class)
     public final ResponseEntity<ExceptionResponse> handleResponseException(ResponseStatusException ex, WebRequest request){
+        ExceptionResponse response = new ExceptionResponse(
+            ex.getStatusCode(),
+            ex.getReason(), 
+            request.getDescription(false)
+        );
+
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
+    @ExceptionHandler(exception = RequiredObjectIsNullException.class)
+    public final ResponseEntity<ExceptionResponse> handleBadRequestException(ResponseStatusException ex, WebRequest request){
         ExceptionResponse response = new ExceptionResponse(
             ex.getStatusCode(),
             ex.getReason(), 

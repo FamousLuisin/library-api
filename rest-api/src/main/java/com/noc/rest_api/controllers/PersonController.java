@@ -4,10 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.noc.rest_api.dto.PersonDto;
@@ -20,22 +24,20 @@ public class PersonController {
     @Autowired
     private PersonServices pServices;
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET,
+    @GetMapping(path = "/{id}",
         produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE })
     public PersonDto findById(@PathVariable("id") Long id){
-        var p = pServices.findById(id);
-        p.setAddress(null);
-        return p;
+
+        return pServices.findById(id);
     }
 
-    @RequestMapping(method = RequestMethod.GET, 
-        produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE  })
+    @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE })
     public List<PersonDto> findAll(){
 
         return pServices.findAll();
     }
 
-    @RequestMapping(method = RequestMethod.POST, 
+    @PostMapping(
         produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE },
         consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE }
     )
@@ -43,7 +45,7 @@ public class PersonController {
         return pServices.create(person);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, 
+    @PutMapping(
         produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE },
         consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE }
     )
@@ -51,9 +53,11 @@ public class PersonController {
         return pServices.update(person);
     }
 
-    @RequestMapping(path = "/{id}" ,method = RequestMethod.DELETE, 
+    @DeleteMapping(path = "/{id}",
         produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE })
-    public void delete(@PathVariable("id") Long id){
+    public ResponseEntity<?> delete(@PathVariable("id") Long id){
         pServices.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
