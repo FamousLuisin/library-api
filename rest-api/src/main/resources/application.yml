@@ -12,3 +12,8 @@ spring:
 logging:
   level:
     root: warn
+springdoc:
+  paths-to-match:
+  - /api/**
+  swagger-ui:
+    use-root-path: true

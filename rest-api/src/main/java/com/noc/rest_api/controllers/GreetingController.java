@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.noc.rest_api.model.Greeting;
 
 @RestController
+@RequestMapping(path = "/api")
 public class GreetingController {
 
     private static final String template = "Hello %s!";

@@ -14,24 +14,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.noc.rest_api.controllers.docs.PersonControllerDocs;
 import com.noc.rest_api.dto.PersonDto;
 import com.noc.rest_api.services.PersonServices;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/person")
-public class PersonController {
+@RequestMapping("/api/person")
+@Tag(name = "People", description = "Endpoints for Managing People")
+public class PersonController implements PersonControllerDocs {
     
     @Autowired
     private PersonServices pServices;
 
     @GetMapping(path = "/{id}",
         produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE })
+    @Override
     public PersonDto findById(@PathVariable("id") Long id){
 
         return pServices.findById(id);
     }
 
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE })
+    @Override
     public List<PersonDto> findAll(){
 
         return pServices.findAll();
@@ -41,6 +46,7 @@ public class PersonController {
         produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE },
         consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE }
     )
+    @Override
     public PersonDto create(@RequestBody PersonDto person){
         return pServices.create(person);
     }
@@ -49,12 +55,14 @@ public class PersonController {
         produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE },
         consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE }
     )
+    @Override
     public PersonDto update(@RequestBody PersonDto person){
         return pServices.update(person);
     }
 
     @DeleteMapping(path = "/{id}",
         produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE })
+    @Override
     public ResponseEntity<?> delete(@PathVariable("id") Long id){
         pServices.delete(id);
 
