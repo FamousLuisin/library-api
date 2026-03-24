@@ -1,4 +1,4 @@
-package com.noc.rest_api.services;
+package com.noc.rest_api.unitest.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -27,6 +27,7 @@ import com.noc.rest_api.dto.BookDto;
 import com.noc.rest_api.mapper.Mapper;
 import com.noc.rest_api.model.Book;
 import com.noc.rest_api.repository.BookRepository;
+import com.noc.rest_api.services.BookService;
 import com.noc.rest_api.unitest.mapper.mocks.MockBook;
 
 @TestInstance(Lifecycle.PER_CLASS)

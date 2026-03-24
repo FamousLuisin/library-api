@@ -1,4 +1,4 @@
-package com.noc.rest_api.services;
+package com.noc.rest_api.unitest.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -27,6 +27,7 @@ import com.noc.rest_api.exception.RequiredObjectIsNullException;
 import com.noc.rest_api.mapper.Mapper;
 import com.noc.rest_api.model.Person;
 import com.noc.rest_api.repository.PersonRepository;
+import com.noc.rest_api.services.PersonServices;
 import com.noc.rest_api.unitest.mapper.mocks.MockPerson;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
