@@ -19,6 +19,7 @@ import com.noc.rest_api.dto.PersonDto;
 import com.noc.rest_api.services.PersonServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+// @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/person")
 @Tag(name = "People", description = "Endpoints for Managing People")
@@ -27,6 +28,7 @@ public class PersonController implements PersonControllerDocs {
     @Autowired
     private PersonServices pServices;
 
+    // @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(path = "/{id}",
         produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE })
     @Override
@@ -42,6 +44,7 @@ public class PersonController implements PersonControllerDocs {
         return pServices.findAll();
     }
 
+    // @CrossOrigin(origins = {"http://localhost:8080", "http://google.com.br"})
     @PostMapping(
         produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE },
         consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE }
