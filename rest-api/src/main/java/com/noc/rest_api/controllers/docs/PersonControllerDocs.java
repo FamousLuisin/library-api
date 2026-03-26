@@ -93,6 +93,25 @@ public interface PersonControllerDocs {
     )
     public PersonDto update(@RequestBody PersonDto person);
 
+    @Operation(summary = "Disable Person", description = "Disable a specific person by your ID", 
+        tags = {"People"},
+        responses = {
+            @ApiResponse(description = "Success", 
+                content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = PersonDto.class)
+                ), 
+                responseCode = "200"
+            ),
+            @ApiResponse(description = "No Content", content = @Content, responseCode = "204"),
+            @ApiResponse(description = "Bad Request", content = @Content, responseCode = "400"),
+            @ApiResponse(description = "Unauthorized", content = @Content, responseCode = "401"),
+            @ApiResponse(description = "Not Found", content = @Content, responseCode = "404"),
+            @ApiResponse(description = "Internal Server Error", content = @Content, responseCode = "500")
+        }
+    )
+    public PersonDto disablePerson(@PathVariable("id") Long id);
+
     @Operation(summary = "Delete Person", description = "Delete Person by your ID", 
         tags = {"People"},
         responses = {

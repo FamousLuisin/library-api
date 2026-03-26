@@ -19,6 +19,8 @@ import com.noc.rest_api.mapper.Mapper;
 import com.noc.rest_api.model.Person;
 import com.noc.rest_api.repository.PersonRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class PersonServices {
     
@@ -88,6 +90,25 @@ public class PersonServices {
         return dto;
     }
 
+    @Transactional
+    public PersonDto disablePerson(Long id){
+        logger.info("Disable person by ID");
+        
+        pRepository
+            .findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
+
+        pRepository.disablePerson(id);
+
+        Person person = pRepository.findById(id).get();
+
+        var dto = mapper.parseObject(person, PersonDto.class);
+
+        addHateoasLinks(dto);
+
+        return dto;
+    }
+
     public void delete(Long id){
         logger.info("Delete person");
         
@@ -104,6 +125,7 @@ public class PersonServices {
         dto.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
+        dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
         dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
     }
 }

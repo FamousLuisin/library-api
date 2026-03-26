@@ -4,8 +4,6 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.noc.rest_api.serializer.GenderSerializer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +21,6 @@ public class PersonDto extends RepresentationModel<PersonDto> {
     private String firstName;
     private String lastName;
     private String address;
-    @JsonSerialize(using = GenderSerializer.class)
     private String gender;
+    private Boolean enabled;
 }
