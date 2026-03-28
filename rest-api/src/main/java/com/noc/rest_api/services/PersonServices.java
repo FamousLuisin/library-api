@@ -1,10 +1,15 @@
 package com.noc.rest_api.services;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -32,6 +37,9 @@ public class PersonServices {
     @Autowired
     private Mapper mapper;
 
+    @Autowired
+    PagedResourcesAssembler<PersonDto> assemnbler;
+
     public PersonDto findById(Long id){
         logger.info("Find Person by Id " + id);
 
@@ -43,16 +51,40 @@ public class PersonServices {
         return dto;
     }
 
-    public List<PersonDto> findAll(){
+    public PagedModel<EntityModel<PersonDto>> findAll(Pageable pageable){
         logger.info("Find all peoples");
 
-        List<Person> listPersons = pRepository.findAll();
+        var listPersons = pRepository.findAll(pageable);
 
-        var dto = mapper.parseListObjects(listPersons, PersonDto.class);
+        var personWithLink = listPersons.map(person -> {
+            var dto = mapper.parseObject(person, PersonDto.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
 
-        dto.forEach(this::addHateoasLinks);
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+            WebMvcLinkBuilder.methodOn(PersonController.class)
+                .findAll(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort().getOrderFor("firstName").getDirection().toString())).withSelfRel();
+        
+        return assemnbler.toModel(personWithLink, findAllLink);
+    }
 
-        return dto;
+    public PagedModel<EntityModel<PersonDto>> findByName(String firstName, Pageable pageable){
+        logger.info("Find peoples by name");
+
+        var listPersons = pRepository.findPeopleByName(firstName, pageable);
+
+        var personWithLink = listPersons.map(person -> {
+            var dto = mapper.parseObject(person, PersonDto.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+            WebMvcLinkBuilder.methodOn(PersonController.class)
+                .findAll(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort().getOrderFor("firstName").getDirection().toString())).withSelfRel();
+        
+        return assemnbler.toModel(personWithLink, findAllLink);
     }
 
     public PersonDto create(PersonDto personDto){
@@ -122,7 +154,7 @@ public class PersonServices {
     private void addHateoasLinks(PersonDto dto){
         dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
 
-        dto.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).findAll(0, 10, "asc")).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
         dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));

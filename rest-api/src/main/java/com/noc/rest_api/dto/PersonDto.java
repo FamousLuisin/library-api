@@ -1,6 +1,7 @@
 package com.noc.rest_api.dto;
 
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @JsonPropertyOrder({"id", "lastName", "firstName", "birthday", "address", "gender"})
+@Relation(collectionRelation = "people")
 public class PersonDto extends RepresentationModel<PersonDto> {
 
     @JsonProperty("_id")

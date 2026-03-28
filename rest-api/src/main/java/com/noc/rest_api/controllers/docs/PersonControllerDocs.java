@@ -1,10 +1,11 @@
 package com.noc.rest_api.controllers.docs;
 
-import java.util.List;
-
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.noc.rest_api.dto.PersonDto;
 
@@ -53,7 +54,33 @@ public interface PersonControllerDocs {
             @ApiResponse(description = "Internal Server Error", content = @Content, responseCode = "500")
         }
     )
-    public List<PersonDto> findAll();
+    public ResponseEntity<PagedModel<EntityModel<PersonDto>>> findAll(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "10") Integer size,
+        @RequestParam(value = "direction", defaultValue = "asc") String direction
+    );
+
+    @Operation(summary = "Find Person By Name", description = "Find Person By Name",
+        responses = {
+            @ApiResponse(description = "OK",
+                content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    array = @ArraySchema(schema = @Schema(implementation = PersonDto.class))
+                ),
+                responseCode = "200"),
+            @ApiResponse(description = "No Content", content = @Content, responseCode = "204"),
+            @ApiResponse(description = "Bad Request", content = @Content, responseCode = "400"),
+            @ApiResponse(description = "Unauthorized", content = @Content, responseCode = "401"),
+            @ApiResponse(description = "Not Found", content = @Content, responseCode = "404"),
+            @ApiResponse(description = "Internal Server Error", content = @Content, responseCode = "500")
+        }
+    )
+    public ResponseEntity<PagedModel<EntityModel<PersonDto>>> findPersonByName(
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "size", defaultValue = "10") Integer size,
+        @RequestParam(value = "direction", defaultValue = "asc") String direction,
+        @PathVariable("firstName") String firstName
+    );
 
     @Operation(summary = "Create Person", description = "Create a person", 
         tags = {"People"},

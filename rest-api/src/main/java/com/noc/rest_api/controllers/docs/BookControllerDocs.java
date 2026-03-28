@@ -1,10 +1,11 @@
 package com.noc.rest_api.controllers.docs;
 
-import java.util.List;
-
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.noc.rest_api.dto.BookDto;
 
@@ -36,7 +37,11 @@ public interface BookControllerDocs {
             @ApiResponse(description = "Internal Server Error", content = @Content, responseCode = "500")
         }
     )
-    public List<BookDto> findAll();
+    public ResponseEntity<PagedModel<EntityModel<BookDto>>> findAll(
+        @RequestParam(name = "page", defaultValue = "0") Integer page,
+        @RequestParam(name = "size", defaultValue = "10") Integer size,
+        @RequestParam(name = "direction", defaultValue = "asc") String direction
+    );
     
     @Operation(
         summary = "find by ID",

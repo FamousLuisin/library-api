@@ -18,11 +18,11 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noc.rest_api.config.TestConfigs;
 import com.noc.rest_api.integrationtest.dto.PersonDto;
+import com.noc.rest_api.integrationtest.dto.wrappers.WrapperPersonDto;
 import com.noc.rest_api.integrationtest.testcontainers.AbstractIntegrationTest;
 
 import io.restassured.builder.RequestSpecBuilder;
@@ -184,6 +184,7 @@ public class PersonControllerTest extends AbstractIntegrationTest {
     void testFindAll() throws JsonProcessingException {
         String content = given(specification)
             .accept(MediaType.APPLICATION_JSON_VALUE)
+            .queryParam("page", 10, "size", 10, "direction", "asc")
 			.when()
 				.get()
 			.then()
@@ -192,29 +193,74 @@ public class PersonControllerTest extends AbstractIntegrationTest {
 				.body()
 					.asString();
 
-        List<PersonDto> people = objectMapper.readValue(content, new TypeReference<List<PersonDto>>() {});
+        WrapperPersonDto wrapper = objectMapper.readValue(content, WrapperPersonDto.class);
+        List<PersonDto> people = wrapper.getEmbedded().getPeople();
     
         PersonDto firstPerson = people.get(0);
 
+        System.out.println(firstPerson);
+
         assertNotNull(firstPerson.getId());
-        assertTrue(firstPerson.getId() == 1);
+        assertTrue(firstPerson.getId() == 152);
 
-        assertEquals("Noki", firstPerson.getFirstName());
-        assertEquals("Jhonson", firstPerson.getLastName());
-        assertEquals("Brasília - DF", firstPerson.getAddress());
-        assertEquals("Male", firstPerson.getGender());
-        assertTrue(firstPerson.getEnabled());
+        assertEquals("Basia", firstPerson.getFirstName());
+        assertEquals("Sorsby", firstPerson.getLastName());
+        assertEquals("Sos. Fabrica de Glucoza nr.5, Business Center, Novo Park 3, cladirea F, et.5 si 6, sector 2", firstPerson.getAddress());
+        assertEquals("Female", firstPerson.getGender());
+        assertFalse(firstPerson.getEnabled());
 
-        PersonDto secondPerson = people.get(1);
+        PersonDto tenthPerson = people.get(9);
 
-        assertNotNull(secondPerson.getId());
-        assertTrue(secondPerson.getId() == 2);
+        assertNotNull(tenthPerson.getId());
+        assertTrue(tenthPerson.getId() == 593);
 
-        assertEquals("Noc", secondPerson.getFirstName());
-        assertEquals("Flinstons", secondPerson.getLastName());
-        assertEquals("Gama - DF", secondPerson.getAddress());
-        assertEquals("Female", secondPerson.getGender());
-        assertTrue(secondPerson.getEnabled());
+        assertEquals("Benedict", tenthPerson.getFirstName());
+        assertEquals("Counter", tenthPerson.getLastName());
+        assertEquals("BOX 70", tenthPerson.getAddress());
+        assertEquals("Male", tenthPerson.getGender());
+        assertTrue(tenthPerson.getEnabled());
+    }
+
+    @Test
+    @Order(7)
+    void testFindByName() throws JsonProcessingException {
+        String content = given(specification)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .pathParam("name", "ti")
+            .queryParam("page", 1, "size", 10, "direction", "asc")
+            .when()
+                .get("/findByName/{name}")
+            .then()
+                .statusCode(200)
+            .extract()
+                .body()
+                    .asString();
+        
+        WrapperPersonDto wrapper = objectMapper.readValue(content, WrapperPersonDto.class);
+        List<PersonDto> people = wrapper.getEmbedded().getPeople();
+
+        PersonDto sixthPerson = people.get(5);
+
+        assertNotNull(sixthPerson.getId());
+        assertTrue(sixthPerson.getId() == 194);
+
+        assertEquals("Justina", sixthPerson.getFirstName());
+        assertEquals("Pedrick", sixthPerson.getLastName());
+        assertEquals("Floor 1, Saint Stephen's Green House, Earlsfort Terrace,", sixthPerson.getAddress());
+        assertEquals("Female", sixthPerson.getGender());
+        assertFalse(sixthPerson.getEnabled());
+        
+
+        PersonDto tenthPerson = people.get(9);
+
+        assertNotNull(tenthPerson.getId());
+        assertTrue(tenthPerson.getId() == 994);
+
+        assertEquals("Konstantine", tenthPerson.getFirstName());
+        assertEquals("Shakesby", tenthPerson.getLastName());
+        assertEquals("Mühlenstraße 8", tenthPerson.getAddress());
+        assertEquals("Male", tenthPerson.getGender());
+        assertTrue(tenthPerson.getEnabled());
     }
 
     private void mockPerson() {
