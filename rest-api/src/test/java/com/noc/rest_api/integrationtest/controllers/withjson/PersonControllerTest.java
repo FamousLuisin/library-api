@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.noc.rest_api.config.TestConfigs;
 import com.noc.rest_api.integrationtest.dto.PersonDto;
 import com.noc.rest_api.integrationtest.dto.wrappers.WrapperPersonDto;
@@ -44,6 +45,7 @@ public class PersonControllerTest extends AbstractIntegrationTest {
     static void setUp(){
         objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        objectMapper.registerModule(new JavaTimeModule());
 
         person = new PersonDto();
     }

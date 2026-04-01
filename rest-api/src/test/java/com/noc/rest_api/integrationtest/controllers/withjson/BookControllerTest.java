@@ -79,7 +79,7 @@ public class BookControllerTest extends AbstractIntegrationTest {
         assertNotNull(createdBook);
         assertNotNull(createdBook.getId());
 
-        assertEquals(16, createdBook.getId());
+        assertEquals(216, createdBook.getId());
         assertEquals("Anthony", createdBook.getAuthor());
         assertEquals(20D, createdBook.getPrice());
         assertEquals("A Clockwork Orange", createdBook.getTitle());
@@ -107,7 +107,7 @@ public class BookControllerTest extends AbstractIntegrationTest {
         assertNotNull(createdBook);
         assertNotNull(createdBook.getId());
 
-        assertEquals(16, createdBook.getId());
+        assertEquals(216, createdBook.getId());
         assertEquals("Anthony Burgess", createdBook.getAuthor());
         assertEquals(20D, createdBook.getPrice());
         assertEquals("A Clockwork Orange", createdBook.getTitle());
@@ -133,7 +133,7 @@ public class BookControllerTest extends AbstractIntegrationTest {
         assertNotNull(createdBook);
         assertNotNull(createdBook.getId());
 
-        assertEquals(16, createdBook.getId());
+        assertEquals(216, createdBook.getId());
         assertEquals("Anthony Burgess", createdBook.getAuthor());
         assertEquals(20D, createdBook.getPrice());
         assertEquals("A Clockwork Orange", createdBook.getTitle());
@@ -162,22 +162,22 @@ public class BookControllerTest extends AbstractIntegrationTest {
         assertNotNull(firstBook);
         assertNotNull(firstBook.getId());
 
-        assertEquals(4, firstBook.getId());
-        assertEquals("Crockford", firstBook.getAuthor());
-        assertEquals(67D, firstBook.getPrice());
-        assertEquals("JavaScript", firstBook.getTitle());
-        assertEquals(LocalDate.of(2017, 11, 7), firstBook.getLaunchDate());
+        assertEquals(27, firstBook.getId());
+        assertEquals("Craig Larman", firstBook.getAuthor());
+        assertEquals(43.82D, firstBook.getPrice());
+        assertEquals("Agile and Iterative Development: A Manager’s Guide", firstBook.getTitle());
+        assertEquals(LocalDate.of(1998, 12, 5), firstBook.getLaunchDate());
 
-        BookDto lastBook = books.get(5);
+        BookDto lastBook = books.get(6);
 
         assertNotNull(lastBook);
         assertNotNull(lastBook.getId());
 
-        assertEquals(1, lastBook.getId());
-        assertEquals("Michael C. Feathers", lastBook.getAuthor());
-        assertEquals(49D, lastBook.getPrice());
-        assertEquals("Working effectively with legacy code", lastBook.getTitle());
-        assertEquals(LocalDate.of(2017, 11, 29), lastBook.getLaunchDate());
+        assertEquals(12, lastBook.getId());
+        assertEquals("Viktor Mayer-Schonberger e Kenneth Kukier", lastBook.getAuthor());
+        assertEquals(54D, lastBook.getPrice());
+        assertEquals("Big Data: como extrair volume, variedade, velocidade e valor da avalanche de informação cotidiana", lastBook.getTitle());
+        assertEquals(LocalDate.of(2017, 11, 7), lastBook.getLaunchDate());
     }
 
     @Test

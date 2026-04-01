@@ -1,10 +1,13 @@
 package com.noc.rest_api.dto;
 
+import java.util.List;
+
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noc.rest_api.model.Book;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,4 +28,6 @@ public class PersonDto extends RepresentationModel<PersonDto> {
     private String address;
     private String gender;
     private Boolean enabled;
+
+    private List<Book> books;
 }
