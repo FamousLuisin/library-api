@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.noc.rest_api.exception.ExceptionResponse;
 import com.noc.rest_api.exception.FileStorageException;
+import com.noc.rest_api.exception.InvalidJwtAuthenticationException;
 import com.noc.rest_api.exception.RequiredObjectIsNullException;
 
 @ControllerAdvice
@@ -68,6 +69,17 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
         ExceptionResponse response = new ExceptionResponse(
             ex.getStatusCode(),
             ex.getReason(), 
+            request.getDescription(false)
+        );
+
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
+    @ExceptionHandler(exception = InvalidJwtAuthenticationException.class)
+    public final ResponseEntity<ExceptionResponse> handleInvalidJwtAuthenticationException(Exception ex, WebRequest request){
+        ExceptionResponse response = new ExceptionResponse(
+            HttpStatus.FORBIDDEN,
+            ex.getMessage(), 
             request.getDescription(false)
         );
 
