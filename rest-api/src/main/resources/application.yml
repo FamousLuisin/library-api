@@ -9,6 +9,18 @@ spring:
     hibernate:
       ddl-auto: none
     #open-in-view: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enabled: true
+            required: true
   servlet:
     multipart:
       enabled: true
@@ -33,3 +45,6 @@ security:
     token:
       secret-key: 53cr37
       expire-length: 3600000
+email:
+  subject: "Default Subject"
+  message: "Default Message"
