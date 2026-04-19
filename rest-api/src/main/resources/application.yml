@@ -29,7 +29,7 @@ spring:
       max-request-size: 600MB
 logging:
   level:
-    root: warn
+    root: info
 springdoc:
   paths-to-match:
   - /api/**

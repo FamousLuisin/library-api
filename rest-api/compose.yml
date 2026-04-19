@@ -1,6 +1,7 @@
 services:
   database:
     container_name: apidb
+    restart: always
     image: postgres:17-alpine
     ports:
       - "5432:5432"
@@ -10,6 +11,27 @@ services:
       POSTGRES_DB: apidb
     volumes:
       - apidb:/var/lib/postgresql/data
+    networks:
+      - apinetwork
+  app:
+    image: nokizin/rest-api
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/apidb
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+    networks:
+      - apinetwork
 
 volumes:
   apidb:
+
+networks:
+  apinetwork:
